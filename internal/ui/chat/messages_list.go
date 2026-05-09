@@ -1354,7 +1354,8 @@ func (ml *messagesList) requestGuildMembers(guildID discord.GuildID, messages []
 		}
 
 		ml.setFetchingChunk(true, 0)
-		ml.waitForChunkEvent()
+		// Avoid blocking channel navigation while waiting for member chunks.
+		// Member details will hydrate asynchronously as chunk events arrive.
 	}
 }
 

@@ -43,10 +43,21 @@ func (m *Model) onReady(event *gateway.ReadyEvent) tview.Cmd {
 		ClearChildren().
 		AddChild(dmNode)
 
+	// Bot READY payloads don't include user settings. Keep user settings optional
+	// and gracefully fall back to guild order from READY guilds.
+	var (
+		guildFolders []gateway.GuildFolder
+		positions    []discord.GuildID
+	)
+	if event.UserSettings != nil {
+		guildFolders = event.UserSettings.GuildFolders
+		positions = event.UserSettings.GuildPositions
+	}
+
 	// Track guilds already in folders to find orphans.
 	// Newly joined guilds may not be synced to GuildFolders yet but always appear in guild positions.
 	guildsInFolders := make(map[discord.GuildID]bool)
-	for _, folder := range event.UserSettings.GuildFolders {
+	for _, folder := range guildFolders {
 		for _, guildID := range folder.GuildIDs {
 			guildsInFolders[guildID] = true
 		}
@@ -60,7 +71,6 @@ func (m *Model) onReady(event *gateway.ReadyEvent) tview.Cmd {
 
 	// Use GuildPositions for ordering (it's the canonical order).
 	// Guilds not in any folder are "orphans" - add them directly to root.
-	positions := event.UserSettings.GuildPositions
 	// Fallback: GuildPositions shouldn't be nil but handle gracefully
 	if len(positions) == 0 {
 		positions = make([]discord.GuildID, 0, len(event.Guilds))
@@ -82,7 +92,7 @@ func (m *Model) onReady(event *gateway.ReadyEvent) tview.Cmd {
 	}
 
 	// Process folders (real folders and single-guild "folders")
-	for _, folder := range event.UserSettings.GuildFolders {
+	for _, folder := range guildFolders {
 		if folder.ID == 0 && len(folder.GuildIDs) == 1 {
 			if guild, ok := guildsByID[folder.GuildIDs[0]]; ok {
 				m.guildsTree.createGuildNode(root, guild.Guild)

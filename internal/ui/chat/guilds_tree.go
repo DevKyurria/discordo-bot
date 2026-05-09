@@ -134,7 +134,16 @@ func (gt *guildsTree) dmStatusStyle(status discord.Status) tcell.Style {
 }
 
 func (gt *guildsTree) createGuildNode(n *tview.TreeNode, guild discord.Guild) {
-	guildNode := tview.NewTreeNode(guild.Name).
+	name := guild.Name
+	if name == "" {
+		if fullGuild, err := gt.chat.state.Cabinet.Guild(guild.ID); err == nil && fullGuild.Name != "" {
+			name = fullGuild.Name
+		} else {
+			name = guild.ID.String()
+		}
+	}
+
+	guildNode := tview.NewTreeNode(name).
 		SetReference(guild.ID).
 		SetExpandable(true).
 		SetExpanded(false).

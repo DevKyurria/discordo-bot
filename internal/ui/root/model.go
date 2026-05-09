@@ -7,7 +7,6 @@ import (
 	"github.com/ayn2op/discordo/internal/consts"
 	"github.com/ayn2op/discordo/internal/ui/chat"
 	"github.com/ayn2op/discordo/internal/ui/login"
-	"github.com/ayn2op/discordo/internal/ui/login/qr"
 	"github.com/ayn2op/discordo/internal/ui/login/token"
 	"github.com/ayn2op/tview"
 	"github.com/ayn2op/tview/flex"
@@ -98,12 +97,13 @@ func (m *Model) Update(msg tview.Msg) tview.Cmd {
 	case loginMsg:
 		return m.showLogin()
 	case tokenMsg:
-		return m.showChat(string(msg))
+		return validateBotToken(string(msg))
 
 	case token.TokenMsg:
-		return tview.Batch(m.showChat(string(msg)), setToken(string(msg)))
-	case qr.TokenMsg:
-		return tview.Batch(m.showChat(string(msg)), setToken(string(msg)))
+		return validateBotToken(string(msg))
+	case validatedTokenMsg:
+		t := string(msg)
+		return tview.Batch(m.showChat(t), setToken(t))
 
 	case chat.LogoutMsg:
 		return tview.Batch(

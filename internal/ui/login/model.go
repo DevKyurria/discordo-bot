@@ -9,7 +9,6 @@ import (
 
 	"github.com/ayn2op/discordo/internal/config"
 	"github.com/ayn2op/discordo/internal/ui"
-	"github.com/ayn2op/discordo/internal/ui/login/qr"
 	"github.com/ayn2op/discordo/internal/ui/login/token"
 	"github.com/ayn2op/tview"
 )
@@ -28,7 +27,7 @@ type Model struct {
 }
 
 func NewModel(cfg *config.Config) *Model {
-	tabs := tabs.NewModel([]tabs.Tab{token.NewModel(), qr.NewModel()})
+	tabs := tabs.NewModel([]tabs.Tab{token.NewModel()})
 
 	l := layers.New()
 	ui.ConfigureBox(l.Box, &cfg.Theme)

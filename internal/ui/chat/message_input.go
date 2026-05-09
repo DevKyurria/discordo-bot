@@ -166,7 +166,11 @@ func (mi *messageInput) Update(msg tview.Msg) tview.Cmd {
 				}
 			}
 
-			// Apply key edits first, then recompute autocomplete through Msg/Cmd.
+			// Apply key edits first. Only run mention autocomplete work when the
+			// current input can actually contain a mention trigger.
+			if !strings.ContainsRune(mi.GetText(), '@') {
+				return handler(msg)
+			}
 			return tview.Sequence(handler(msg), mi.tabSuggest())
 		}
 	}
@@ -508,10 +512,8 @@ func (mi *messageInput) searchMember(gID discord.GuildID, name string) tview.Cmd
 
 	mi.lastSearch = time.Now()
 	return func() tview.Msg {
-		mi.chat.messagesList.waitForChunkEvent()
-		mi.chat.messagesList.setFetchingChunk(true, 0)
 		mi.chat.state.MemberState.SearchMember(gID, name)
-		mi.cache.Create(key, mi.chat.messagesList.waitForChunkEvent())
+		mi.cache.Create(key, mi.chat.state.MemberState.SearchLimit)
 		return tabSuggestMsg{}
 	}
 }

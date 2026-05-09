@@ -19,7 +19,7 @@ import (
 	"github.com/diamondburned/arikawa/v3/state"
 	"github.com/diamondburned/arikawa/v3/state/store/defaultstore"
 	"github.com/diamondburned/arikawa/v3/utils/handler"
-	"github.com/diamondburned/arikawa/v3/utils/httputil"
+	"github.com/diamondburned/arikawa/v3/utils/json/option"
 	"github.com/diamondburned/arikawa/v3/utils/ws"
 	"github.com/diamondburned/ningen/v3"
 	"github.com/diamondburned/ningen/v3/states/read"
@@ -84,14 +84,17 @@ func NewModel(app *tview.Application, cfg *config.Config, token string) *Model {
 	m.messageInput = newMessageInput(cfg, m)
 	m.channelsPicker = newChannelsPicker(cfg, m)
 
-	identifyProps := http.IdentifyProperties()
-	gateway.DefaultIdentity = identifyProps
 	gateway.DefaultPresence = &gateway.UpdatePresenceCommand{
 		Status: m.cfg.Status,
 	}
 
 	id := gateway.DefaultIdentifier(token)
 	id.Compress = false
+	intents := gateway.IntentGuilds |
+		gateway.IntentGuildMessages |
+		gateway.IntentGuildMessageReactions |
+		gateway.IntentMessageContent
+	id.Intents = option.NewUint(uint(intents))
 
 	session := session.NewCustom(id, http.NewClient(token), handler.New())
 	state := state.NewFromSession(session, defaultstore.New())
@@ -103,7 +106,7 @@ func NewModel(app *tview.Application, cfg *config.Config, token string) *Model {
 	m.state.StateLog = func(err error) {
 		slog.Error("state log", "err", err)
 	}
-	m.state.OnRequest = append(m.state.OnRequest, httputil.WithHeaders(http.Headers()), m.onRequest)
+	m.state.OnRequest = append(m.state.OnRequest, m.onRequest)
 
 	m.SetBackgroundLayerStyle(m.cfg.Theme.Dialog.BackgroundStyle.Style)
 	m.buildLayout()
