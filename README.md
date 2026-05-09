@@ -48,11 +48,11 @@ Discordo uses the default configuration if a configuration file is not found in 
 - Ensure your bot has been invited to at least one server
 - Verify the bot is online in the server member list
 
-##Can't see members or mentions
+## Can't see members or mentions
 - Check that Server Members Intent is enabled in Developer Portal
 - Re-invite the bot after enabling the intent
 
-##Can't read messages
+## Can't read messages
 - Verify Message Content Intent is enabled
 - Ensure the bot has Send Messages and Read Message History permissions
 
