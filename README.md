@@ -30,7 +30,7 @@ go build .
 2. Enter your bot token and click on the "Login" button to save it.
 
 > [!NOTE]
-> Discordo uses bot tokens rather than user tokens to comply with Discord's Terms of Service. Create a bot application at Discord Developer Portal and use its token.
+> Discordo uses bot tokens rather than user tokens to comply with Discord's Terms of Service. Create a bot application at [Discord Developer Portal](https://discord.com/developers/home) and use its token.
 
 ## Configuration
 
