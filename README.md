@@ -4,31 +4,16 @@ Discordo is a lightweight, secure, and feature-rich Discord terminal client. Hea
 
 ![Preview](.github/preview.png)
 
+## Added Features
+- **Bot token authentication** - Uses bot tokens instead of user tokens to comply with Discord's Terms of Service
+
 ## Installation
-
-### Prebuilt binaries
-
-You can download and install a [prebuilt binary here](https://nightly.link/ayn2op/discordo/workflows/ci/main) for Windows, macOS, or Linux.
-
-### Package managers
-
-- Arch Linux: `yay -S discordo-git`
-- Gentoo (available on the guru repos as a live ebuild): `emerge net-im/discordo`
-- FreeBSD: `pkg install discordo` or via the ports system `make -C /usr/ports/net-im/discordo install clean`.
-- Nix: Add `pkgs.discordo` to `environment.systemPackages` or `home.packages`.
-
-- Windows (Scoop):
-
-```sh
-scoop bucket add vvxrtues https://github.com/vvirtues/bucket
-scoop install discordo
-```
 
 ### Building from source
 
 ```bash
-git clone https://github.com/ayn2op/discordo
-cd discordo
+git clone https://github.com/DevKyurria/discordo-bot
+cd discordo-bot
 go build .
 ```
 
@@ -38,27 +23,14 @@ go build .
 
 ## Usage
 
-### Token (UI, recommended)
+### Bot Token (UI, recommended)
 
 1. Run the `discordo` executable with no arguments.
 
-2. Enter your token and click on the "Login" button to save it.
+2. Enter your bot token and click on the "Login" button to save it.
 
-### Token (environment variable)
-
-Set the value of the `DISCORDO_TOKEN` environment variable to the authentication token to log in with.
-
-```sh
-DISCORDO_TOKEN="OTI2MDU5NTQxNDE2Nzc5ODA2.Yc2KKA.2iZ-5JxgxG-9Ub8GHzBSn-NJjNg" discordo
-```
-
-### QR (UI)
-
-1. Run the `discordo` executable with no arguments.
-
-2. Click on the "Login with QR" button.
-
-3. Follow the instructions in the QR Login screen.
+> [!NOTE]
+> Discordo uses bot tokens rather than user tokens to comply with Discord's Terms of Service. Create a bot application at Discord Developer Portal and use its token.
 
 ## Configuration
 
@@ -70,12 +42,10 @@ The configuration file allows you to configure and customize the behavior, keybi
 
 Discordo uses the default configuration if a configuration file is not found in the aforementioned path; however, the default configuration file is not written to the path. [The default configuration can be found here](./internal/config/config.toml).
 
-> [!IMPORTANT]
-> Automated user accounts or "self-bots" are against Discord's Terms of Service. I am not responsible for any loss caused by using "self-bots" or Discordo.
 
 ## License
 
-Copyright (C) 2025-present ayn2op
+Copyright (C) 2026-present ayn2op
 
 This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
 See the [LICENSE](./LICENSE) file for the full license text.
