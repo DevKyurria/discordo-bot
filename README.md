@@ -42,6 +42,23 @@ The configuration file allows you to configure and customize the behavior, keybi
 
 Discordo uses the default configuration if a configuration file is not found in the aforementioned path; however, the default configuration file is not written to the path. [The default configuration can be found here](./internal/config/config.toml).
 
+## Troubleshooting
+
+## Bot shows no servers
+- Ensure your bot has been invited to at least one server
+- Verify the bot is online in the server member list
+
+##Can't see members or mentions
+- Check that Server Members Intent is enabled in Developer Portal
+- Re-invite the bot after enabling the intent
+
+##Can't read messages
+- Verify Message Content Intent is enabled
+- Ensure the bot has Send Messages and Read Message History permissions
+
+>[!IMPORTANT]
+>This client is designed for bot tokens to comply with Discord's Terms of Service.
+>Your bot must have the required permissions and intents configured correctly before using Discordo.
 
 ## License
 
